@@ -1,0 +1,38 @@
+{
+  "name": "Quark",
+  "version": "0.0.1",
+  "description": "A JavaScript particle system with physics effects, based on Proton",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf dist lib && mkdirp dist && mkdir lib",
+    "prestart": "npm run clean",
+    "start": "parallelshell \"npm run watch\" \"npm run watch:lint\" \"npm run watch:lib\"",
+    "watch": "npm run dist -- --watch",
+    "watch:lib": "npm run lib -- --watch",
+    "watch:lint": "watch \"eslint scripts src test || exit 0\" src",
+    "lint": "eslint scripts src test --max-warnings 0",
+    "lintfix": "npm run lint --fix",
+    "prebuild": "npm run lint",
+    "build": "npm run dist",
+    "predist": "rimraf dist/**",
+    "dist": "browserify -d dist -n Quark -o quark -t babelify",
+    "prelib": "rimraf lib/**",
+    "lib": "babel src --out-dir lib -s"
+  },
+  "dependencies": {
+    "mini-signals": "^1.1.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-plugin-transform-class-properties": "^6.19.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-es2016": "^6.16.0",
+    "babel-preset-es2017": "^6.16.0",
+    "babelify": "^7.3.0",
+    "transform-loader": "^0.2.3",
+    "babel-loader": "latest",
+    "preprocess-loader": "latest",
+    "preprocess": "latest",
+    "eslint": "^3.5.0"
+  }
+}
