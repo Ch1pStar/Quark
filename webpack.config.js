@@ -7,6 +7,7 @@ const config = { pkg };
 
 module.exports = {
   entry: __dirname+'/src/index.js',
+  devtool: 'inline-source-map',
   output: {
     path: __dirname + '/dist',
     libraryTarget: 'umd',
