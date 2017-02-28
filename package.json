@@ -6,18 +6,12 @@
   "scripts": {
     "clean": "rimraf dist lib && mkdirp dist && mkdir lib",
     "prestart": "npm run clean",
-    "start": "parallelshell \"npm run watch\" \"npm run watch:lint\" \"npm run watch:lib\"",
-    "watch": "npm run dist -- --watch",
-    "watch:lib": "npm run lib -- --watch",
-    "watch:lint": "watch \"eslint scripts src test || exit 0\" src",
+    "start": "webpack-dev-server --content-base dist",
     "lint": "eslint scripts src test --max-warnings 0",
     "lintfix": "npm run lint --fix",
     "prebuild": "npm run lint",
     "build": "npm run dist",
-    "predist": "rimraf dist/**",
-    "dist": "browserify -d dist -n Quark -o quark -t babelify",
-    "prelib": "rimraf lib/**",
-    "lib": "babel src --out-dir lib -s"
+    "dist": "webpack"
   },
   "dependencies": {
     "mini-signals": "^1.1.1"
