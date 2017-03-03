@@ -10,7 +10,6 @@ export default class Emitter extends Particle{
     super();
 
     this.initializes = [];
-    this.particles = [];
     this.behaviours = [];
     this.emitTime = 0;
     this.emitTotalTimes = -1;
@@ -37,6 +36,8 @@ export default class Emitter extends Particle{
     this.rate = new Rate(1, .1);
 
     this.integrator = new NumericalIntegration();
+
+    this._tailParticle = null;
   }
 
   emit(emitTime, life) {
@@ -68,8 +69,7 @@ export default class Emitter extends Particle{
    * @method removeAllParticles
    */
   removeAllParticles() {
-    for (let i = 0; i < this.particles.length; i++)
-      this.particles[i].dead = true;
+    this._tailParticle = null;
   }
 
   /**
@@ -81,10 +81,7 @@ export default class Emitter extends Particle{
   createParticle(initialize, behaviour) {
     const particle = new Particle();
     this.setupParticle(particle, initialize, behaviour);
-    // this.dispatchEvent(PARTICLE_CREATED, particle);
-    // this.dispatch(PARTICLE_CREATED, particle);
     this.particleCreated.dispatch(particle);
-
 
     return particle;
   }
@@ -172,18 +169,20 @@ export default class Emitter extends Particle{
 
   integrate(time) {
     const damping = 1 - this.damping;
-    const length = this.particles.length;
 
     this.integrator.integrate(this, time, damping);
-    for (let i = 0; i < length; i++) {
-      var particle = this.particles[i];
-      particle.update(time, i);
+    let particle = this._tailParticle;
+    let i = 0;
+    while(particle){
+      particle.update(time, i++);
       this.integrator.integrate(particle, time, damping);
-
-      // this.dispatchEvent(PARTICLE_UPDATE, particle);
-      // this.dispatch(PARTICLE_UPDATE, particle);
-
+      if (particle._prev && particle._prev.dead) {
+        this.particleDead.dispatch(particle._prev);
+        particle._prev = particle._prev._prev;
+      }
       this.particleUpdate.dispatch(particle);
+
+      particle = particle._prev;
     }
   }
 
@@ -214,17 +213,6 @@ export default class Emitter extends Particle{
 
     this.emitting(time);
     this.integrate(time);
-    let particle;
-    const length = this.particles.length;
-    for (let k = length - 1; k >= 0; k--) {
-      particle = this.particles[k];
-      if (particle.dead) {
-        // this.dispatchEvent(PARTICLE_DEAD , particle);
-        // this.dispatch(PARTICLE_DEAD , particle);
-        this.particleDead.dispatch(particle);
-        this.particles.splice(k, 1);
-      }
-    }
   };
 
   setupParticle(particle, initialize, behaviour) {
@@ -249,7 +237,8 @@ export default class Emitter extends Particle{
     initializeFn(this, particle, initializes);
     particle.addBehaviours(behaviours);
     particle.parent = this;
-    this.particles.push(particle);
+    particle._prev = this._tailParticle;
+    this._tailParticle = particle;
   };
 
   /**
@@ -259,7 +248,8 @@ export default class Emitter extends Particle{
   destroy() {
     this.dead = true;
     this.emitTotalTimes = -1;
-    if (this.particles.length == 0) {
+
+    if(this._tailParticle === null) {
       this.removeInitializers();
       this.removeAllBehaviours();
 

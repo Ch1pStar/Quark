@@ -13,6 +13,7 @@ export default class Particle{
     }
 
     reset(init) {
+      this._prev = null;
       this.life = Infinity;
       this.age = 0;
       this.energy = 1;
