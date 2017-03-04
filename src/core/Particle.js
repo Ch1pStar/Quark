@@ -6,6 +6,9 @@ export default class Particle{
     constructor() {
       this.id = uid++;
       this.reset(true);
+
+      this.update = this.update;
+      this.destroy = this.destroy;
     }
 
     getDirection() {

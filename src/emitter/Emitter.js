@@ -38,6 +38,13 @@ export default class Emitter extends Particle{
     this.integrator = new NumericalIntegration();
 
     this._tailParticle = null;
+    this._poolHead = null;
+
+
+    this.update = this.update;
+    this.createParticle = this.createParticle;
+    this.integrate = this.integrate;
+    this.setupParticle = this.setupParticle;
   }
 
   emit(emitTime, life) {

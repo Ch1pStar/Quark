@@ -8,6 +8,7 @@ export default class Collision extends Behaviour {
 		super(life, easing);
 		this.reset(emitter, mass, callback);
 		this.name = "Collision";
+		this.applyBehaviour = this.applyBehaviour
 	}
 
 	/**

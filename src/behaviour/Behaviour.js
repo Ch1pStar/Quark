@@ -17,6 +17,7 @@ export default class Behaviour {
 		this.dead = false;
 		this.parents = [];
 		this.name = 'Behaviour';
+		this.applyBehaviour = this.applyBehaviour
 	}
 
 	/**

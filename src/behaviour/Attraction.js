@@ -13,6 +13,8 @@ export default class Attraction extends Behaviour {
 		this.attractionForce = new Vector2D();
 		this.lengthSq = 0;
 		this.name = "Attraction";
+		
+		this.applyBehaviour = this.applyBehaviour
 	}
 
 	/**

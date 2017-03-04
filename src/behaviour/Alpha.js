@@ -8,6 +8,8 @@ export default class Alpha extends Behaviour {
 
 		this.reset(a, b, this.life);
 		this.name = "Alpha";
+
+		this.applyBehaviour = this.applyBehaviour
 	}
 
 	/**
