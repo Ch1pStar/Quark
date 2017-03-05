@@ -72,41 +72,15 @@ export default {
      * @param {Object} pOBJ
      */
     setVector2DByObject: function(target, pOBJ) {
-        if (pOBJ.hasOwnProperty('x'))
-            target.p.x = pOBJ['x'];
+        if(pOBJ.x) target.p.x = pOBJ.x;
 
-        if (pOBJ.hasOwnProperty('y'))
-            target.p.y = pOBJ['y'];
+        if(pOBJ.y) target.p.y = pOBJ.y;
 
-        if (pOBJ.hasOwnProperty('vx'))
-            target.v.x = pOBJ['vx'];
+        if(pOBJ.vx) target.v.x = pOBJ.vx;
+        if(pOBJ.vy) target.v.y = pOBJ.vy;
 
-        if (pOBJ.hasOwnProperty('vy'))
-            target.v.y = pOBJ['vy'];
-
-        if (pOBJ.hasOwnProperty('ax'))
-            target.a.x = pOBJ['ax'];
-
-        if (pOBJ.hasOwnProperty('ay'))
-            target.a.y = pOBJ['ay'];
-
-        if (pOBJ.hasOwnProperty('p'))
-            particle.p.copy(pOBJ['p']);
-
-        if (pOBJ.hasOwnProperty('v'))
-            particle.v.copy(pOBJ['v']);
-
-        if (pOBJ.hasOwnProperty('a'))
-            particle.a.copy(pOBJ['a']);
-
-        if (pOBJ.hasOwnProperty('position'))
-            particle.p.copy(pOBJ['position']);
-
-        if (pOBJ.hasOwnProperty('velocity'))
-            particle.v.copy(pOBJ['velocity']);
-
-        if (pOBJ.hasOwnProperty('accelerate'))
-            particle.a.copy(pOBJ['accelerate']);
+        if(pOBJ.ax) target.a.x = pOBJ.ax;
+        if(pOBJ.ay) target.a.y = pOBJ.ay;
     },
 
 

@@ -16,10 +16,11 @@ export default class Span{
 		if (this.isArray) {
 			return this.a[Math.floor(this.a.length * Math.random())];
 		} else {
-			if (!this.center)
+			if (!this.center){
 				return randomAToB(this.a, this.b, INT);
-			else
+			}else{
 				return randomFloating(this.a, this.b, INT);
+			}
 		}	
 	}
 
