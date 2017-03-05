@@ -126,7 +126,7 @@ export default {
      * @return {Quark.Span}
      */
     setSpanValue: function(a, b, c) {
-        if (a instanceof Span) {
+        if (a.constructor === Span) {
             return a;
         } else {
             if (!b) {
@@ -151,7 +151,7 @@ export default {
      * @return {Mixed} the value of Quark.Span OR the parameter if it is not a Quark.Span
      */
     getSpanValue: function(pan) {
-        if (pan instanceof Span)
+        if (pan.constructor === Span)
             return pan.getValue();
         else
             return pan;

@@ -183,6 +183,8 @@ export default class Emitter extends Particle{
     while(particle){
       particle.update(time, i++);
       this.integrator.integrate(particle, time, damping);
+
+      // todo tailparticle is not removed
       if (particle._prev && particle._prev.dead) {
         this.particleDead.dispatch(particle._prev);
         particle._prev = particle._prev._prev;
@@ -227,14 +229,14 @@ export default class Emitter extends Particle{
     let behaviours = this.behaviours;
 
     if (initialize) {
-      if ( initialize instanceof Array)
+      if ( initialize.constructor === Array)
         initializes = initialize;
       else
         initializes = [initialize];
     }
 
     if (behaviour) {
-      if ( behaviour instanceof Array)
+      if ( behaviour.constructor === Array)
         behaviours = behaviour;
       else
         behaviours = [behaviour];
