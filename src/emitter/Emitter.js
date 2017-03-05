@@ -1,4 +1,5 @@
-import Particle from '../core/Particle';
+// import Particle from '../core/Particle';
+import Particle from '../core/PixiParticle';
 import Rate from '../initialize/Rate';
 import NumericalIntegration from '../math/NumericalIntegration';
 import { PARTICLE_CREATED, PARTICLE_UPDATE, PARTICLE_DEAD } from './const';
@@ -6,8 +7,11 @@ import initializeFn from '../initialize/InitializeUtil';
 import MiniSignal from 'mini-signals';
 
 export default class Emitter extends Particle{
-  constructor() {
+  constructor(txt, container) {
     super();
+
+    this.txt = txt;
+    this.particleContainer = container;
 
     this.initializes = [];
     this.behaviours = [];
@@ -39,6 +43,7 @@ export default class Emitter extends Particle{
 
     this._tailParticle = null;
     this._poolHead = null;
+    this.particleCount = 0;
 
 
     this.update = this.update;
@@ -77,6 +82,7 @@ export default class Emitter extends Particle{
    */
   removeAllParticles() {
     this._tailParticle = null;
+    this._poolHead = null;
   }
 
   /**
@@ -86,8 +92,45 @@ export default class Emitter extends Particle{
    * @method removeAllParticles
    */
   createParticle(initialize, behaviour) {
-    const particle = new Particle();
-    this.setupParticle(particle, initialize, behaviour);
+    // const particle = new Particle();
+
+    let particle;
+
+    if(this._poolHead){
+      particle = this._poolHead;
+      this._poolHead = this._poolHead._next;
+      particle._next = null;
+      // console.log('pooled');
+    }else{
+      particle = new Particle(this.txt);
+      this.particleContainer.addChild(particle.sprite);
+    }
+    this.particleCount++;
+
+    let initializes = this.initializes;
+    let behaviours = this.behaviours;
+
+    if (initialize) {
+      if ( initialize.constructor === Array)
+        initializes = initialize;
+      else
+        initializes = [initialize];
+    }
+
+    if (behaviour) {
+      if ( behaviour.constructor === Array)
+        behaviours = behaviour;
+      else
+        behaviours = [behaviour];
+    }
+
+    particle.reset();
+    initializeFn(this, particle, initializes);
+    particle.addBehaviours(behaviours);
+    particle.parent = this;
+    particle._prev = this._tailParticle;
+    this._tailParticle = particle;
+
     this.particleCreated.dispatch(particle);
 
     return particle;
@@ -181,13 +224,31 @@ export default class Emitter extends Particle{
     let particle = this._tailParticle;
     let i = 0;
     while(particle){
+
       particle.update(time, i++);
       this.integrator.integrate(particle, time, damping);
 
       // todo tailparticle is not removed
       if (particle._prev && particle._prev.dead) {
-        this.particleDead.dispatch(particle._prev);
-        particle._prev = particle._prev._prev;
+        const deadParticle = particle._prev;
+        this.particleDead.dispatch(deadParticle);
+        this.particleCount--;
+
+        // if(deadParticle === this._tailParticle){
+        //   this._tailParticle = deadParticle._prev;
+        // }
+
+        deadParticle.sprite.alpha = 0;
+        deadParticle.sprite.visible = false;
+
+        particle._prev = deadParticle._prev;
+
+        //add to pool
+        deadParticle._prev = null;
+        deadParticle._next = this._poolHead;
+        this._poolHead = deadParticle;
+
+
       }
       this.particleUpdate.dispatch(particle);
 
@@ -248,7 +309,36 @@ export default class Emitter extends Particle{
     particle.parent = this;
     particle._prev = this._tailParticle;
     this._tailParticle = particle;
-  };
+  }
+
+  // recycleParticle(particle){
+  //   // if(particle.next)
+  //   //   particle.next.prev = particle.prev;
+
+  //   particle._prev = particle._prev._prev;
+
+  //   if(particle === this._tailParticle)
+  //     this._tailParticle = particle._prev;
+
+  //   //add to pool
+  //   particle._prev = null;
+  //   particle._next = this._poolHead;
+  //   this._poolHead = particle;
+
+  //   // //remove child from display, or make it invisible if it is in a ParticleContainer
+  //   // if(this._parentIsPC)
+  //   // {
+  //   //   particle.alpha = 0;
+  //   //   particle.visible = false;
+  //   // }
+  //   // else
+  //   // {
+  //   //   if(particle.parent)
+  //   //     particle.parent.removeChild(particle);
+  //   // }
+  //   // //decrease count
+  //   // --this.particleCount;
+  // }
 
   /**
    * Destory this Emitter

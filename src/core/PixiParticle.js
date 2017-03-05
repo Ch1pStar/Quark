@@ -3,10 +3,12 @@ import Vector2D from '../math/Vector2D';
 let uid = 0;
 
 export default class Particle{
-    constructor() {
+    constructor(txt) {
       this.id = uid++;
       this.reset(true);
 
+      if(txt)
+      this.sprite = new PIXI.Sprite(txt);
       this.update = this.update;
       this.destroy = this.destroy;
     }
@@ -24,7 +26,7 @@ export default class Particle{
       this.dead = false;
       this.sleep = false;
       this.target = null;
-      this.sprite = null;
+      // this.sprite = null;
       this.parent = null;
       this.mass = 1;
       this.radius = 10;
@@ -72,8 +74,10 @@ export default class Particle{
           if (this.behaviours[i])
             this.behaviours[i].applyBehaviour(this, time, index)
         }
-      } else {
-
+      }
+      if(this.sprite){
+        this.sprite.x = this.p.x;
+        this.sprite.y = this.p.y;
       }
 
       if(this.age >= this.life) {
