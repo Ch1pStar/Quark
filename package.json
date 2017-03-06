@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "A JavaScript particle system with physics effects, based on Proton",
   "license": "MIT",
+  "main": "./dist/quark.js",
   "scripts": {
     "clean": "rimraf dist lib && mkdirp dist && mkdir lib",
     "prestart": "npm run clean",
