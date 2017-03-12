@@ -6,6 +6,7 @@ export default class Particle{
     constructor() {
       this.id = uid++;
       this.reset(true);
+      this.sprite = null;
 
       this.update = this.update;
       this.destroy = this.destroy;
@@ -16,15 +17,12 @@ export default class Particle{
     }
 
     reset(init) {
-      this._prev = null;
-      this._next = null;
       this.life = Infinity;
       this.age = 0;
       this.energy = 1;
       this.dead = false;
       this.sleep = false;
       this.target = null;
-      this.sprite = null;
       this.parent = null;
       this.mass = 1;
       this.radius = 10;
@@ -63,26 +61,26 @@ export default class Particle{
       return this;
     }
 
-    update(time, index) {
-      if(!this.sleep) {
-        this.age += time;
-        const length = this.behaviours.length;
-        let i;
-        for ( i = 0; i < length; i++) {
-          if (this.behaviours[i])
-            this.behaviours[i].applyBehaviour(this, time, index)
-        }
-      } else {
+    update(index, time) {
+      const age = this.age + time;
 
-      }
-
-      if(this.age >= this.life) {
+      if(age >= this.life) {
         this.destroy();
-      } else {
-        const scale = this.easing(this.age / this.life);
-        this.energy = Math.max(1 - scale, 0);
+        return false;
       }
+      this.age = age;
 
+      const length = this.behaviours.length;
+      let i;
+      for ( i = 0; i < length; i++) {
+        if (this.behaviours[i]){
+          this.behaviours[i].applyBehaviour(this, time, index)
+        }
+      }
+      const scale = this.easing(this.age / this.life);
+      this.energy = Math.max(1 - scale, 0);
+
+      return true;
     }
 
     addBehaviour(behaviour) {

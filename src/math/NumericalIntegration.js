@@ -4,6 +4,9 @@ export default class NumericalIntegration {
 
   constructor(type) {
     this.type = type || EULER;
+
+    this.integrate = this.integrate;
+    this.eulerIntegrate = this.eulerIntegrate;
   }
 
   integrate(particle, time, damping) {
