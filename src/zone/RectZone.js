@@ -1,4 +1,5 @@
 import Zone from './Zone';
+import CrossZone from '../behaviour/CrossZone';
 
 export default class RectZone extends Zone {
 
@@ -19,7 +20,7 @@ export default class RectZone extends Zone {
 	}
 
 	crossing(particle) {
-		if (this.crossType == 'dead') {
+		if (this.crossType == CrossZone.CROSS_TYPES.DEAD) {
 			if (particle.p.x + particle.radius < this.x)
 				particle.dead = true;
 			else if (particle.p.x - particle.radius > this.x + this.width)
@@ -29,7 +30,7 @@ export default class RectZone extends Zone {
 				particle.dead = true;
 			else if (particle.p.y - particle.radius > this.y + this.height)
 				particle.dead = true;
-		} else if (this.crossType == 'bound') {
+		} else if (this.crossType == CrossZone.CROSS_TYPES.BOUND) {
 			if (particle.p.x - particle.radius < this.x) {
 				particle.p.x = this.x + particle.radius;
 				particle.v.x *= -1;
@@ -45,7 +46,7 @@ export default class RectZone extends Zone {
 				particle.p.y = this.y + this.height - particle.radius;
 				particle.v.y *= -1;
 			}
-		} else if (this.crossType == 'cross') {
+		} else if (this.crossType == CrossZone.CROSS_TYPES.CROSS) {
 			if (particle.p.x + particle.radius < this.x && particle.v.x <= 0)
 				particle.p.x = this.x + this.width + particle.radius;
 			else if (particle.p.x - particle.radius > this.x + this.width && particle.v.x >= 0)

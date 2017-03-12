@@ -1,4 +1,5 @@
 import Zone from './Zone';
+import CrossZone from '../behaviour/CrossZone';
 
 export default class PointZone extends Zone {
 
@@ -29,13 +30,13 @@ export default class PointZone extends Zone {
 
 	crossing(particle) {
 		var d = particle.p.distanceTo(this.center);
-		if (this.crossType == "dead") {
+		if (this.crossType == CrossZone.CROSS_TYPES.DEAD) {
 			if (d - particle.radius > this.radius)
 				particle.dead = true;
-		} else if (this.crossType == "bound") {
+		} else if (this.crossType == CrossZone.CROSS_TYPES.BOUND) {
 			if (d + particle.radius >= this.radius)
 				this.getSymmetric(particle);
-		} else if (this.crossType == "cross") {
+		} else if (this.crossType == CrossZone.CROSS_TYPES.CROSS) {
 			if (this.alert) {
 				alert('Sorry CircleZone does not support cross method');
 				this.alert = false;

@@ -86,6 +86,7 @@ export default class Emitter extends Particle{
 
     particle.reset();
     initializeFn(this, particle, initializes);
+    particle.addBehaviours(behaviours);
     particle.update(index, time);
 
     this.particleCreated.dispatch(particle);

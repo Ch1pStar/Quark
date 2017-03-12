@@ -1,9 +1,12 @@
+import CrossZone from '../behaviour/CrossZone';
+import Vector2D from '../math/Vector2D';
+
 export default class Zone {
 
 	constructor() {
-		this.vector = new Proton.Vector2D(0, 0);
+		this.vector = new Vector2D(0, 0);
 		this.random = 0;
-		this.crossType = 'dead';
+		this.crossType = CrossZone.CROSS_TYPES.DEAD;
 		this.alert = true;
 	}
 

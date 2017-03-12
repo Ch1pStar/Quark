@@ -1,4 +1,5 @@
 import Zone from './Zone';
+import CrossZone from '../behaviour/CrossZone';
 
 export default class LineZone extends Zone {
 
@@ -26,7 +27,7 @@ export default class LineZone extends Zone {
 		this.xxyy = this.dx * this.dx + this.dy * this.dy;
 		this.gradient = this.getGradient();
 		this.length = this.getLength();
-		this.direction = direction || '>';
+		this.direction = direction || 1;
 	}
 
 	getPosition() {
@@ -39,8 +40,8 @@ export default class LineZone extends Zone {
 
 	crossing(particle) {
 		var self = this;
-		if (this.crossType == "dead") {
-			if (this.direction == ">" || this.direction == "R" || this.direction == "right" || this.direction == "down") {
+		if (this.crossType == CrossZone.CROSS_TYPES.DEAD) {
+			if (this.direction == 1) {
 				this.getRange(particle, function() {
 					if (self.getDirection(particle.p.x, particle.p.y))
 						particle.dead = true;
@@ -51,7 +52,7 @@ export default class LineZone extends Zone {
 						particle.dead = true;
 				})
 			}
-		} else if (this.crossType == "bound") {
+		} else if (this.crossType == CrossZone.CROSS_TYPES.BOUND) {
 			this.getRange(particle, function() {
 				if (self.getDistance(particle.p.x, particle.p.y) <= particle.radius) {
 					if (self.dx == 0) {
@@ -63,7 +64,7 @@ export default class LineZone extends Zone {
 					}
 				}
 			});
-		} else if (this.crossType == "cross") {
+		} else if (this.crossType == CrossZone.CROSS_TYPES.CROSS) {
 			if (this.alert) {
 				alert('Sorry lineZone does not support cross method');
 				this.alert = false;
@@ -120,39 +121,5 @@ export default class LineZone extends Zone {
 
 	getLength() {
 		return Math.sqrt(this.dx * this.dx + this.dy * this.dy)
-	}
-
-	crossing(particle) {
-		var self = this;
-		if (this.crossType == "dead") {
-			if (this.direction == ">" || this.direction == "R" || this.direction == "right" || this.direction == "down") {
-				this.getRange(particle, function() {
-					if (self.getDirection(particle.p.x, particle.p.y))
-						particle.dead = true;
-				})
-			} else {
-				this.getRange(particle, function() {
-					if (!self.getDirection(particle.p.x, particle.p.y))
-						particle.dead = true;
-				})
-			}
-		} else if (this.crossType == "bound") {
-			this.getRange(particle, function() {
-				if (self.getDistance(particle.p.x, particle.p.y) <= particle.radius) {
-					if (self.dx == 0) {
-						particle.v.x *= -1;
-					} else if (self.dy == 0) {
-						particle.v.y *= -1;
-					} else {
-						self.getSymmetric(particle.v);
-					}
-				}
-			});
-		} else if (this.crossType == "cross") {
-			if (this.alert) {
-				alert('Sorry lineZone does not support cross method');
-				this.alert = false;
-			}
-		}
 	}
 }
