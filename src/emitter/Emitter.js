@@ -37,11 +37,7 @@ export default class Emitter extends Particle{
 
     this.integrator = new NumericalIntegration();
 
-    this.maxParticles = this.minParticles = 50000;
-    this.active = new Array(this.maxParticles).fill(false);
-    this.particles = new Array(this.maxParticles);
-    this.activeCount = 0;
-
+    this.maxParticles = 50000;
 
     this.update = this.update;
     this.emitting = this.emitting;
@@ -51,6 +47,15 @@ export default class Emitter extends Particle{
     this.updateParticle = this.updateParticle;
   }
 
+  set maxParticles(val){
+    this.active = new Array(val).fill(false);
+    this.particles = new Array(val);
+    this.activeCount = 0;
+  }
+
+  get maxParticles(){
+    return this.particles.length;
+  }
 
   /**
    * create single particle;
