@@ -271,12 +271,11 @@ export default class Emitter extends Particle{
     this.dead = true;
     this.emitTotalTimes = -1;
 
-    if(this._tailParticle === null) {
-      this.removeInitializers();
-      this.removeAllBehaviours();
+    this.removeInitializers();
+    this.removeAllBehaviours();
 
-      if (this.parent)
-        this.parent.removeEmitter(this);
+    if (this.parent){
+      this.parent.removeEmitter(this);
     }
   }
 

@@ -1,7 +1,7 @@
 import Behaviour from './Behaviour';
 import Util from '../core/Util';
 import Vector2D from '../math/Vector2D';
-import randomAToB from '../math/MathUtils';
+import { randomAToB } from '../math/MathUtils';
 
 export default class RandomDrift extends Behaviour {
 
