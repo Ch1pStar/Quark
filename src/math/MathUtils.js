@@ -1,6 +1,6 @@
 export function randomAToB(a, b, INT) {
   if (!INT)
-    return (a + Math.random() * (b - a ))<<0;
+    return (a + Math.random() * (b - a ));
   else
     return Math.floor(Math.random() * (b - a)) + a;
 }
