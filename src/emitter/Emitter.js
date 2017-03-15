@@ -39,6 +39,11 @@ export default class Emitter extends Particle{
 
     this.maxParticles = 50000;
 
+
+    this.particleCreated = new MiniSignal();
+    this.particleUpdate = new MiniSignal();
+    this.particleDead = new MiniSignal();
+
     this.update = this.update;
     this.emitting = this.emitting;
     this.createParticle = this.createParticle;
@@ -132,10 +137,12 @@ export default class Emitter extends Particle{
 
   emitting(time) {
     this.emitTime += time;
-    const length = this.rate.getValue(time);
+    if(this.emitTime < this.emitTotalTimes){
+      const length = this.rate.getValue(time);
 
-    for (let i = 0; i < length; i++) {
-      this.createParticle(time);
+      for (let i = 0; i < length; i++) {
+        this.createParticle(time);
+      }
     }
   }
 
@@ -148,10 +155,6 @@ export default class Emitter extends Particle{
     }
 
     this.rate.init();
-
-    this.particleCreated = new MiniSignal();
-    this.particleUpdate = new MiniSignal();
-    this.particleDead = new MiniSignal();
   }
 
   /**
@@ -168,8 +171,7 @@ export default class Emitter extends Particle{
    * @method removeAllParticles
    */
   removeAllParticles() {
-    this._tailParticle = null;
-    this._poolHead = null;
+    this.active.forEach((a)=>a=false);
   }
 
   /**
