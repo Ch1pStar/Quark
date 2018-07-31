@@ -14,15 +14,18 @@ module.exports = {
     umdNamedDefine: true,
     filename: "quark.js"
   },
+  mode: 'development',
   module: {
-    loaders: [
+    rules: [
         {
           test: /\.js$/,
-          exclude: /node_modules/,
-          loaders: [
-              'babel-loader?cacheDirectory=true&presets[]=es2015&plugins[]=transform-class-properties',
-              `preprocess?${JSON.stringify(config)}`,
-          ],
+          exclude: /(node_modules|bower_components)/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['env']
+            }
+          }
         },
         {
             test: /\.(glsl|frag|vert)$/,

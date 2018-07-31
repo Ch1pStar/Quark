@@ -2,16 +2,16 @@ import Behaviour from './Behaviour';
 import Vector2D from '../math/Vector2D';
 import Util from '../core/Util';
 
+Rotate.STYLES = {
+	TO: 1 << 0,
+	FROM: 1 << 1
+};
+
+Rotate.TYPE = {
+	VELOCITY: 1 << 0
+};
+
 export default class Rotate extends Behaviour {
-
-	static STYLES = {
-		TO: 1 << 0,
-		FROM: 1 << 1
-	};
-
-	static TYPE = {
-		VELOCITY: 1 << 0
-	};
 
 	constructor(a, b, style, life, easing) {
 		super(life, easing);
