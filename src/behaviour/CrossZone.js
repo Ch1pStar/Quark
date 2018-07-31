@@ -2,12 +2,6 @@ import Behaviour from './Behaviour';
 import Util from '../core/Util';
 import Vector2D from '../math/Vector2D';
 
-CrossZone.CROSS_TYPES = {
-	CROSS: 1 << 0,
-	DEAD: 1 << 2,
-	BOUND: 1 << 3
-};
-
 export default class CrossZone extends Behaviour{
 
 	constructor(zone, crossType, life, easing){
@@ -31,3 +25,9 @@ export default class CrossZone extends Behaviour{
 		this.zone.crossing(particle);
 	}
 }
+
+CrossZone.CROSS_TYPES = {
+	CROSS: 1 << 0,
+	DEAD: 1 << 2,
+	BOUND: 1 << 3
+};
