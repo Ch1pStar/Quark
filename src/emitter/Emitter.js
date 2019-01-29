@@ -1,4 +1,3 @@
-// import Particle from '../core/Particle';
 import Particle from '../core/Particle';
 import Rate from '../initialize/Rate';
 import NumericalIntegration from '../math/NumericalIntegration';

@@ -5,7 +5,7 @@
   "license": "MIT",
   "main": "./dist/quark.js",
   "scripts": {
-    "clean": "rimraf dist lib && mkdirp dist && mkdir lib",
+    "clean": "rimraf dist && mkdirp dist",
     "prestart": "npm run clean",
     "start": "webpack-dev-server --content-base dist",
     "lint": "eslint scripts src test --max-warnings 0",
@@ -18,18 +18,14 @@
     "mini-signals": "^1.1.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-core": "^6.26.3",
-    "babel-loader": "latest",
-    "babel-plugin-transform-class-properties": "^6.19.0",
-    "babel-preset-env": "^1.7.0",
-    "babelify": "^7.3.0",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "babel-loader": "^8.0.5",
+    "babelify": "latest",
     "eslint": "^3.5.0",
-    "preprocess": "latest",
-    "preprocess-loader": "latest",
-    "transform-loader": "^0.2.3",
-    "webpack": "^4.16.3",
-    "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.5"
+    "rimraf": "^2.6.3",
+    "webpack": "^4.29.0",
+    "webpack-cli": "latest",
+    "webpack-dev-server": "latest"
   }
 }

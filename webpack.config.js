@@ -1,36 +1,30 @@
-const path      = require('path');
-const fs        = require('fs');
-const pkg       = require('./package.json');
-
-
+const path = require('path');
+const fs = require('fs');
+const pkg = require('./package.json');
 const config = { pkg };
 
 module.exports = {
-  entry: __dirname+'/src/index.js',
+  entry: './src/index.js',
   devtool: 'inline-source-map',
   output: {
     path: __dirname + '/dist',
     libraryTarget: 'umd',
+    library: 'Quark',
     umdNamedDefine: true,
-    filename: "quark.js"
+    filename: 'quark.js'
   },
   mode: 'development',
   module: {
     rules: [
         {
           test: /\.js$/,
-          exclude: /(node_modules|bower_components)/,
+          exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
             options: {
-              presets: ['env']
+              presets: ['@babel/preset-env']
             }
           }
-        },
-        {
-            test: /\.(glsl|frag|vert)$/,
-            exclude: /node_modules/,
-            loaders: ['raw', 'glslify'],
         },
     ]
   }
