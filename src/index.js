@@ -28,4 +28,4 @@ export { Span, RectZone, PointZone, LineZone, ImageZone, CircleZone };
 
 export { Alpha, Attraction, Collision, Repulsion, CrossZone, Force, Gravity, GravityWell, RandomDrift, Rotate, Scale };
 
-global.Quark = exports;
+// global.Quark = exports;
